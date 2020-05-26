@@ -1,5 +1,6 @@
 #include <iostream>
 #include <dlfcn.h>
+#include <dirent.h>
 #include "exp2.h"
 
 using namespace std;

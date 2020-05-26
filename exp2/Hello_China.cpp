@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void f()
+void g()
 {
-    cout << "Hello World!" << endl;
+    cout << "Hello China!" << endl;
 }

@@ -7,3 +7,9 @@ void f()
 {
     cout << "Hello World!" << endl;
 }
+
+int main()
+{
+    f();
+    return 0;
+}
