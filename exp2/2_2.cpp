@@ -1,37 +1,72 @@
 #include <iostream>
 #include <dlfcn.h>
 #include <dirent.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
 #include "exp2.h"
 
 using namespace std;
 
 int main()
 {
-    // 打开动态链接库
-    void *handle = dlopen("./libtest.so", RTLD_LAZY);
-    if (0 == handle)
+    DIR *pDir;
+    struct dirent *pDirent;
+    char CDir[100];
+
+    pDir = opendir("plugin/");
+    if (pDir == NULL)
     {
-        cout << "dlopen error" << endl;
+        cout << "Open dir error!" << endl;
         return 0;
     }
 
-    // 映射动态链接库的函数
-    typedef void (*Fun)();
+    chdir("./plugin/");
+    cout << "当前工作目录: " << getcwd(CDir, sizeof(CDir)) << endl << endl;
 
-    Fun f1 = (Fun)dlsym(handle, "_Z1fv");
-
-    if (0 == f1)
+    while ((pDirent = readdir(pDir)) != NULL)
     {
-        cout << "f1 error" << endl;
-        char *str = dlerror();
-        cout << str << endl;
-        return 0;
+        // 跳过.和..两个目录
+        cout << pDirent->d_name << endl;
+        if (strlen(pDirent->d_name) <= 2)
+        {
+            continue;
+        }
+
+        // 打开动态链接库
+        void *handle = dlopen(pDirent->d_name, RTLD_LAZY);
+        if (0 == handle)
+        {
+            cout << "dlopen error" << endl;
+            return 0;
+        }
+
+        // 映射动态链接库的函数
+        typedef void (*Fun)();
+
+        Fun f1 = (Fun)dlsym(handle, "_Z1fv");
+
+        if (0 == f1)
+        {
+            cout << "f1 error" << endl;
+            char *str = dlerror();
+            cout << str << endl;
+            return 0;
+        }
+
+        (*f1)();
+
+        // 卸载动态链接库
+        dlclose(handle);
     }
 
-    (*f1)();
+    chdir("./");
 
-    // 卸载动态链接库
-    dlclose(handle);
+    if ((closedir(pDir)) == -1)
+    {
+        cout << "Close dir error!" << endl;
+        return 0;
+    }
 
     return 0;
 }

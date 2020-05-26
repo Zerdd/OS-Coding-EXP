@@ -7,7 +7,7 @@ using namespace std;
 int main()
 {
     // 打开动态链接库
-    void *handle = dlopen("./libtest.so", RTLD_LAZY);
+    void *handle = dlopen("./plugin/libHelloChina.so", RTLD_LAZY);
     if (0 == handle)
     {
         cout << "dlopen error" << endl;
