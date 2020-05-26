@@ -73,7 +73,7 @@ public:
 int main()
 {
   CA_LL a;
-  a.i = 10;
+  a.i = 20;
 
   if (a.Serialize("data") == false) {
     cout << "Serialize error!" << endl;  
