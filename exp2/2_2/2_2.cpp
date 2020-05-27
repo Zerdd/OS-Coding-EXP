@@ -1,6 +1,7 @@
 #include <iostream>
 #include <dlfcn.h>
 #include <dirent.h>
+#include <string>
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -13,8 +14,9 @@ int main()
     DIR *pDir;
     struct dirent *pDirent;
     char CDir[100];
+    char *error;
 
-    pDir = opendir("plugin/");
+    pDir = opendir("./plugin");
     if (pDir == NULL)
     {
         cout << "Open dir error!" << endl;
@@ -27,7 +29,7 @@ int main()
     while ((pDirent = readdir(pDir)) != NULL)
     {
         // 跳过.和..两个目录
-        cout << pDirent->d_name << endl;
+        cout << "File name: " << pDirent->d_name << endl;
         if (strlen(pDirent->d_name) <= 2)
         {
             continue;
@@ -38,6 +40,7 @@ int main()
         if (0 == handle)
         {
             cout << "dlopen error" << endl;
+            fprintf (stderr, "%s \n", dlerror());  
             return 0;
         }
 
