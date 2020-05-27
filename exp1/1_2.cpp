@@ -26,7 +26,7 @@ public:
     std::cout << "Show_Content: " << i << std::endl;
   }
 
-  bool Serialize(const char *pFilePath);
+  bool Serialize(const char *pFilePath) const;
   bool Serialize(int) const;
 
   bool Deserialize(const char *pFilePath);
@@ -36,7 +36,7 @@ private:
   int i;
 };
 
-bool Content::Serialize(const char *pFilePath)
+bool Content::Serialize(const char *pFilePath) const
 {
   // 打开文件，不存在就创建
   int fd = open(pFilePath, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
@@ -120,9 +120,8 @@ bool Content::Deserialize(int fd)
   }
 
   int r = read(fd, &i, sizeof(int));
-  if ((r == -1) || (r == 0))
+  if ((r == 0) || (r == -1))
   {
-    cout << "read error!" << endl; // TODO Fix read()
     return false;
   }
 
@@ -200,23 +199,27 @@ bool SerializerForContent::Deserialize(const char *pFilePath, std::vector<Conten
 int main()
 {
   {
-    vector<Content> v;
+    vector<Content>v;
     Content a, b, c;
     a.SetContent(10);
     b.SetContent(20);
     c.SetContent(30);
 
+    v.push_back(a);
+    v.push_back(b);
+    v.push_back(c);
+
     SerializerForContent SC;
-    SC.Serialize("data", v);
+    SC.Serialize("data2", v);
   }
 
   {
     vector<Content> v;
     SerializerForContent SC;
-    SC.Deserialize("data", v);
+    SC.Deserialize("data2", v);
     for (int i = 0; i <= 2; i++)
     {
-      v[i].ShowContent();
+      cout << i << ": " ; v[i].ShowContent();
     }
   }
 
