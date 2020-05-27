@@ -23,7 +23,7 @@ public:
 
     void ShowContentA()
     {
-        std::cout << "Show_Content_A: " << i << std::endl;
+        cout << "Show_Content_A: " << i << endl;
     }
 
     bool Serialize(int) const;
@@ -85,7 +85,7 @@ public:
 
     void ShowContentB()
     {
-        std::cout << "Show_Content_B: " << i << ", " << j << std::endl;
+        cout << "Show_Content_B: " << i << ", " << j << endl;
     }
 
     bool Serialize(int) const;
@@ -298,7 +298,7 @@ int main()
         Serizlizer s;
         s.Deserialize("data3", v);
 
-        for (int i = 0; i <= v.size(); i++)
+        for (int i = 0; i < v.size(); i++)
         {
             if (v[i].nType == 0)
             {
