@@ -239,8 +239,6 @@ bool Serizlizer::Deserialize(const char *pFilePath, std::vector<Serialized> &v)
             s.pObj = p;
 
             v.push_back(s);
-
-            delete p;
         }
         else if (type == 1)
         {
@@ -253,8 +251,6 @@ bool Serizlizer::Deserialize(const char *pFilePath, std::vector<Serialized> &v)
             s.pObj = p;
 
             v.push_back(s);
-
-            delete p;
         }
     }
 
