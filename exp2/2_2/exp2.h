@@ -1,3 +1,3 @@
 void f();
 void g();
-void Soul_Questios();
+extern "C" void printSC();

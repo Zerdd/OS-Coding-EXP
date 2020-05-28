@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void f()
+extern "C" void printSC()
 {
     cout << "Hello World!" << endl;
 }

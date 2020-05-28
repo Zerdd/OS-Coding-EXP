@@ -29,25 +29,27 @@ int main()
     while ((pDirent = readdir(pDir)) != NULL)
     {
         // 跳过.和..两个目录
-        cout << "File name: " << pDirent->d_name << endl;
+        // cout << "File name: " << pDirent->d_name << endl;
         if (strlen(pDirent->d_name) <= 2)
         {
             continue;
         }
 
         // 打开动态链接库
-        void *handle = dlopen(pDirent->d_name, RTLD_LAZY);
+        string str = "./";
+        str += (string)(pDirent->d_name);
+        void *handle = dlopen(&str[0], RTLD_LAZY);
         if (0 == handle)
         {
             cout << "dlopen error" << endl;
-            fprintf (stderr, "%s \n", dlerror());  
+            fprintf (stderr, "%s \n", dlerror());
             return 0;
         }
 
         // 映射动态链接库的函数
         typedef void (*Fun)();
 
-        Fun f1 = (Fun)dlsym(handle, "_Z1fv");
+        Fun f1 = (Fun)dlsym(handle, "printSC");
 
         if (0 == f1)
         {

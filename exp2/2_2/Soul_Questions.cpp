@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void Soul_Questions()
+extern "C" void printSC()
 {
     cout << "刷牙了吗？" << endl;
     cout << "复习了吗？" << endl;
