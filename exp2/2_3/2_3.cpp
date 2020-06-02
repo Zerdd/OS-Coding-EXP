@@ -4,10 +4,71 @@
 #include <string>
 #include <string.h>
 #include <unistd.h>
-#include <sys/types.h>
-#include "exp2.h"
+#include <sys/types.h> 
 
 using namespace std;
+
+class foo
+{
+private:
+    DIR *pDir;
+    struct dirent *pDirent;
+    char* path;
+
+public:
+    foo(char *p) { path = p;}
+    virtual ~foo() {}
+
+    bool getID();
+    bool getHelp();
+    bool printSC();
+    bool loopDir(char* func);
+};
+
+bool foo::getHelp()
+{
+    return (loopDir("help")) ? true : false;
+}
+
+bool foo::getID()
+{
+    return (loopDir("ID")) ? true : false;
+}
+
+bool foo::printSC()
+{
+    return (loopDir("print")) ? true : false;
+}
+
+// TODO transplant loopDir()
+bool foo::loopDir(char* func)
+{
+    pDir = opendir(path);
+    if (pDir == NULL)
+    {
+        cout << "open dir error!" << endl;
+        return false;
+    }
+
+    while ((pDirent = readdir(pDir)) != NULL)
+    {
+        // skip "." and ".."
+        if ((strcmp(pDirent->d_name, ".")) == 0 || (strcmp(pDirent->d_name, "..")) == 0)
+        {
+            continue;
+        }
+        
+        string str = "./";
+        str += (string)(pDirent->d_name);
+        void *handle = dlopen(&str[0], RTLD_LAZY);
+        if (0 == handle)
+        {
+            cout << "dlopen error!" << endl;
+            return false;
+        }
+    }
+    
+}
 
 int main()
 {
