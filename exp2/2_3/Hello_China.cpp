@@ -9,12 +9,12 @@ extern "C" void printSC()
     cout << "Hello China!" << endl;
 }
 
-extern "C" void Help()
+extern "C" void help()
 {
-    cout << "Function ID: " << FUNC_ID << "This function used to print HC" << endl;
+    cout << "Function ID: " << FUNC_ID << " - This function is used to print HC" << endl;
 }
 
-extern "C" int getID(void)
+extern "C" int getID()
 {
     return FUNC_ID;
 }

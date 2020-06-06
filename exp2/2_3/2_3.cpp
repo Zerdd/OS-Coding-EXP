@@ -1,138 +1,55 @@
-#include <iostream>
 #include <dlfcn.h>
-#include <dirent.h>
-#include <string>
 #include <string.h>
-#include <unistd.h>
-#include <sys/types.h> 
+#include <iostream>
+#include "pluginCounter.h"
 
 using namespace std;
 
-class foo
+int main(int argc, char *argv[])
 {
-private:
-    DIR *pDir;
-    struct dirent *pDirent;
-    char* path;
-
-public:
-    foo(char *p) { path = p;}
-    virtual ~foo() {}
-
-    bool getID();
-    bool getHelp();
-    bool printSC();
-    bool loopDir(char* func);
-};
-
-bool foo::getHelp()
-{
-    return (loopDir("help")) ? true : false;
-}
-
-bool foo::getID()
-{
-    return (loopDir("ID")) ? true : false;
-}
-
-bool foo::printSC()
-{
-    return (loopDir("print")) ? true : false;
-}
-
-// TODO transplant loopDir()
-bool foo::loopDir(char* func)
-{
-    pDir = opendir(path);
-    if (pDir == NULL)
+    if (argc != 2)
     {
-        cout << "open dir error!" << endl;
-        return false;
-    }
-
-    while ((pDirent = readdir(pDir)) != NULL)
-    {
-        // skip "." and ".."
-        if ((strcmp(pDirent->d_name, ".")) == 0 || (strcmp(pDirent->d_name, "..")) == 0)
-        {
-            continue;
-        }
-        
-        string str = "./";
-        str += (string)(pDirent->d_name);
-        void *handle = dlopen(&str[0], RTLD_LAZY);
-        if (0 == handle)
-        {
-            cout << "dlopen error!" << endl;
-            return false;
-        }
+        cout << "Please input correct argc!" << endl;
+        return 0;
     }
     
-}
-
-int main()
-{
-    DIR *pDir;
-    struct dirent *pDirent;
-    char CDir[100];
-    char *error;
-
-    pDir = opendir("./plugin");
-    if (pDir == NULL)
+    // 执行help命令
+    if(strcmp(argv[1], "help") == 0)
     {
-        cout << "Open dir error!" << endl;
-        return 0;
-    }
+        vector<string> vStrNames;
+        pc_t pc;
 
-    chdir("./plugin/");
-    cout << "当前工作目录: " << getcwd(CDir, sizeof(CDir)) << endl << endl;
-
-    while ((pDirent = readdir(pDir)) != NULL)
-    {
-        // 跳过.和..两个目录
-        // cout << "File name: " << pDirent->d_name << endl;
-        if (strlen(pDirent->d_name) <= 2)
+        if (pc.getPluginNames(vStrNames) == false)
         {
-            continue;
-        }
-
-        // 打开动态链接库
-        string str = "./";
-        str += (string)(pDirent->d_name);
-        void *handle = dlopen(&str[0], RTLD_LAZY);
-        if (0 == handle)
-        {
-            cout << "dlopen error" << endl;
-            fprintf (stderr, "%s \n", dlerror());
+            cout << "Get plugin names error!" << endl;
             return 0;
         }
 
-        // 映射动态链接库的函数
-        typedef void (*Fun)();
-
-        Fun f1 = (Fun)dlsym(handle, "printSC");
-
-        if (0 == f1)
+        for (int i = 0; i < vStrNames.size(); i++)
         {
-            cout << "f1 error" << endl;
-            char *str = dlerror();
-            cout << str << endl;
-            return 0;
+            void *handle = dlopen(vStrNames[i].c_str(), RTLD_LAZY);
+            if (handle == 0)
+            {
+                cout << "dlopen error!" << endl;
+                return 0;
+            }
+
+            typedef void (*FUNC_HELP)();
+
+            FUNC_HELP dl_help = (FUNC_HELP)dlsym(handle, "help");
+            if (dl_help == 0)
+            {
+                cout << "dlsym error!" << endl;
+                return 0;
+            }
+
+            (dl_help)();
+            
+            dlclose(handle);
         }
-
-        (*f1)();
-
-        // 卸载动态链接库
-        dlclose(handle);
     }
 
-    chdir("./");
-
-    if ((closedir(pDir)) == -1)
-    {
-        cout << "Close dir error!" << endl;
-        return 0;
-    }
+    int FuncID = atoi(argv[1]);
 
     return 0;
 }
