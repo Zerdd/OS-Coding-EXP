@@ -24,7 +24,7 @@ int main()
     }
 
     chdir("./plugin/");
-    cout << "当前工作目录: " << getcwd(CDir, sizeof(CDir)) << endl << endl;
+    // cout << "当前工作目录: " << getcwd(CDir, sizeof(CDir)) << endl << endl;
 
     while ((pDirent = readdir(pDir)) != NULL)
     {
