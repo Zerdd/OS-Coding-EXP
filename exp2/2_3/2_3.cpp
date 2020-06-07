@@ -39,15 +39,10 @@ int main(int argc, char *argv[])
         dl_help(vStrNames);
     }
     // 需要执行哪一个插件
-    else if (strcmp(argv[1], "1") == 0 || strcmp(argv[1], "2") == 0)
+    else
     {
         FuncID = atoi(argv[1]); // 转换整型
         dl_printSC(vStrNames, vIntID);
-    }
-    // 第二个参数不正确
-    else
-    {
-        cout << "Please input correct cmd!" << endl;
     }
 
     return 0;
