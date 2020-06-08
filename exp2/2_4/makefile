@@ -1,5 +1,5 @@
 cc      = g++
-cflags  = -ldl
+cflags  = -ldl -g
 soflags = -fpic -shared
 deph    = pluginCounter.h pluginController.h
 depcpp  = pluginCounter.cpp pluginController.cpp

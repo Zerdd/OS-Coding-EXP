@@ -3,20 +3,20 @@
 
 using namespace std;
 
-class CPrintPlugin : public IPrintPlugin
+int FUNC_ID = 1;
+
+class CPrintPlugin : public ipp_t
 {
 private:
-    int FUNC_ID;
+    
 
 public:
     CPrintPlugin()
     {
-        FUNC_ID = 1;
     }
 
     virtual ~CPrintPlugin()
     {
-
     }
 
     virtual void printSC()

@@ -14,12 +14,23 @@ int main(int argc, char *argv[])
         return 0;
     }
     
-    pct_t pc; // init a plugin controller
-    pc.InitController();
+    pct_t pc;               // 实例化一个插件控制器
+    
+    // 初始化插件控制器
+    if (pc.InitController() == false)
+    {
+        cout << "Init plugin controller error!" << endl;
+        return 0;
+    }   
 
+    // 用户输入help
     if (strcmp(argv[1], "help") == 0)
     {
-        pc.ProcessHelp();
+        if (pc.ProcessHelp() == false)
+        {
+            cout << "ProcessHelp() error!" << endl;
+            return 0;
+        }
     }
     else
     {
