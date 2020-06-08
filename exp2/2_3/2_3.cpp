@@ -19,9 +19,9 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    vector<string> vStrNames;
-    vector<int> vIntID;
-    pc_t pc;
+    vector<string> vStrNames;  // 用于存放所有的插件路径
+    vector<int> vIntID;        // 用于存放所有的插件ID
+    pc_t pc;                   // 实例化一个插件遍历器
 
     // 获取plunin/里所有插件信息
     if (pc.getPluginINFO() == false)
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     {
         dl_help(vStrNames);
     }
-    // 需要执行哪一个插件
+    // 根据ID选择对应插件进行print
     else
     {
         FuncID = atoi(argv[1]); // 转换整型
@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+// 路径里所有动态库里执行help()
 void dl_help(vector<string> vStrNames)
 {
     // 遍历所有插件执行help()
@@ -78,6 +79,7 @@ void dl_help(vector<string> vStrNames)
     }
 }
 
+// 根据FuncID决定那个动态库执行printSC()
 void dl_printSC(vector<string> vStrNames, vector<int> vIntID)
 {
     // 遍历动态库

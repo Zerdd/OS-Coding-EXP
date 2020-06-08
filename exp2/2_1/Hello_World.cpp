@@ -1,5 +1,4 @@
 #include <iostream>
-#include "exp2.h"
 
 using namespace std;
 

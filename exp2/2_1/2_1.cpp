@@ -1,12 +1,11 @@
 #include <iostream>
 #include <dlfcn.h>
-// #include "exp2.h"
 
 using namespace std;
 
 int main()
 {
-    // 打开动态链接库
+    // 打开动态链接库 
     void *handle = dlopen("./libTest.so", RTLD_LAZY);
     if (0 == handle)
     {
@@ -19,6 +18,7 @@ int main()
 
     Fun f1 = (Fun)dlsym(handle, "printSC");
 
+    // 映射失败
     if (0 == f1)
     {
         cout << "f1 error" << endl;
@@ -27,6 +27,7 @@ int main()
         return 0;
     }
 
+    // 调用
     (*f1)();
 
     // 卸载动态链接库

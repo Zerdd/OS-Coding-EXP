@@ -57,6 +57,7 @@ bool pc_t::getPluginINFO()
         dlclose(handle);
     }
 
+    // 关闭目录
     closedir(dp);
 
     return true;

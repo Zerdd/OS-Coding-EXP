@@ -11,8 +11,8 @@ class pluginCounter
 private:
     vector<string> vStrNames;    // plugin/下所有插件的路径
 public:
-    pluginCounter(/* args */);
-    ~pluginCounter();
+    pluginCounter(/* args */);   // 构造函数
+    ~pluginCounter();            // 析构函数
 
     bool getPluginINFO();        // 获取plugin/里所有插件的路径&ID
     vector<string> getVNames();  // 返回所有插件的路径
