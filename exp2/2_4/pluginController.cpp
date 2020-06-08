@@ -58,7 +58,8 @@ bool pct_t::InitController(void)
         }
         else
         {
-            cout << "dlopen()又尼玛是返回NULL辣!" << endl;
+            cout << "dlopen() error!" << endl;
+            cout << dlerror() << endl;
             return false;
         }
         

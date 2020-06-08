@@ -3,5 +3,6 @@
 !*.h
 !*.cpp
 !*.md
+!*.so
 !*makefile
 !*/
