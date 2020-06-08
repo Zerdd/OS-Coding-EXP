@@ -1,3 +1,4 @@
+#include <iostream>
 #include "IPrintPlugin.h"
 
 using namespace std;
@@ -34,7 +35,7 @@ public:
     }
 };
 
-extern "C" void createOkbj(ipp_t **ppPlugin)
+extern "C" void createObj(ipp_t **ppPlugin)
 {
     static CPrintPlugin plugin;
     *ppPlugin = &plugin;

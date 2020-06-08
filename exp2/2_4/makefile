@@ -1,10 +1,11 @@
 cc      = g++
 cflags  = -ldl
 soflags = -fpic -shared
-defh    = pluginCounter.h
+deph    = pluginCounter.h pluginController.h
+depcpp  = pluginCounter.cpp pluginController.cpp
 
-2_3 : 2_3.cpp pluginCounter.cpp libHC.so libHW.so
-	$(cc) -o 2_3 2_3.cpp pluginCounter.cpp $(defh) $(cflags)
+2_4 : 2_4.cpp $(depcpp) libHC.so libHW.so
+	$(cc) -o 2_4 2_4.cpp $(depcpp) $(deph) $(cflags)
 
 libHC.so : Hello_China.cpp
 	$(cc) -o libHC.so Hello_China.cpp $(soflags)
