@@ -38,7 +38,7 @@ bool pct_t::InitController(void)
 
         ipp_t *pPlugin = NULL;
 
-        // void *handle = dlopen("~/OS-Coding-EXP/exp2/2_4/plugin/libHC.so", RTLD_LAZY); // open DL
+        // void *handle = dlopen("~/OS-Coding-EXP/exp2/2_4/plugin/libHC.so", RTLD_LAZY); // for debug
         void *handle = dlopen(vStrPluginNames[i].c_str(), RTLD_LAZY); // open DL
         if (handle != NULL)
         {
