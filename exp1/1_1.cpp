@@ -22,7 +22,7 @@ public:
     i = j;
   }
 
-  void ShowContent()            // 输出序列化内容
+  void ShowContent()            // 输出类内变量
   {
     std::cout << "Show_Content: " << i << std::endl;
   }

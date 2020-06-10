@@ -1,19 +1,18 @@
 cc      = g++
-cflags  = -ldl -g
-soflags = -fpic -shared
-sodeps  = IPrintPlugin.h IPrintPlugin.cpp
-deph    = pluginCounter.h pluginController.h
-depcpp  = pluginCounter.cpp pluginController.cpp
+cflags  = -ldl -g -o
+soflags = -fpic -shared -o
+sodeps  = IPrintPlugin.cpp
+dep     = pluginCounter.cpp pluginController.cpp
 
 2_4 : 2_4.cpp $(depcpp) libHC.so libHW.so
-	$(cc) -o 2_4 2_4.cpp $(depcpp) $(deph) $(cflags)
+	$(cc) 2_4.cpp $(dep) $(cflags) 2_4
 
 libHC.so : Hello_China.cpp
-	$(cc) -o libHC.so Hello_China.cpp $(sodeps) $(soflags)
+	$(cc) Hello_China.cpp $(sodeps) $(soflags) libHC.so
 	cp libHC.so plugin/
 
 libHW.so : Hello_World.cpp
-	$(cc) -o libHW.so Hello_World.cpp $(sodeps) $(soflags)
+	$(cc) Hello_World.cpp $(sodeps) $(soflags) libHW.so
 	cp libHW.so plugin/
 
 clean:

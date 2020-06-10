@@ -27,45 +27,13 @@ public:
     std::cout << "Show_Content: " << i << std::endl;
   }
 
-  bool Serialize(const char *pFilePath) const;  // 序列化函数
-  bool Serialize(int) const;                    // 重载，序列化类内对象至对应文件中
+  bool Serialize(int) const;  // 序列化类内对象至对应文件中
 
-  bool Deserialize(const char *pFilePath);      // 反序列化函数
-  bool Deserialize(int);                        // 重载，反序列化对应文件至类内对象中
+  bool Deserialize(int);      // 反序列化对应文件至类内对象中
 
 private:
   int i;
 };
-
-// @brief 调用重载函数序列化至文件中
-bool Content::Serialize(const char *pFilePath) const
-{
-  // 打开文件，不存在就创建
-  int fd = open(pFilePath, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-  if (fd == -1)
-  {
-    cout << "Open error!" << endl;
-    return false;
-  }
-
-  // 调用重载函数写入
-  if (Serialize(fd) == false)
-  {
-    cout << "Write error!" << endl;
-    close(fd);
-    return false;
-  }
-
-  // 关闭
-  if (close(fd) == -1)
-  {
-    cout << "Close error!" << endl;
-    return false;
-  }
-
-  cout << "Serialize success!" << endl;
-  return true;
-}
 
 // @brief 将变量写入对应文件中
 bool Content::Serialize(int fd) const
@@ -84,38 +52,6 @@ bool Content::Serialize(int fd) const
     return false;
   }
 
-  return true;
-}
-
-// @brief 反序列化函数
-bool Content::Deserialize(const char *pFilePath)
-{
-  // 打开已序列化的文件
-  int fd = open(pFilePath, O_RDONLY);
-  if (fd == -1)
-  {
-    close(fd);
-    cout << "Open error!" << endl;
-    return false;
-  }
-  
-  // 调用重载函数反序列化
-  if (Deserialize(fd) == false)
-  {
-    cout << "Read error!" << endl;
-    close(fd);
-    return false;
-  }
-
-  // 关闭
-  if (close(fd) == -1)
-  {
-    cout << "Close error!" << endl;
-    return false;
-  }
-
-  // cout << "Deserialize success!" << endl;
-  // cout << "a.i = " << i << endl;
   return true;
 }
 

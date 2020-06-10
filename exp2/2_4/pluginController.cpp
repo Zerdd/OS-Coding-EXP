@@ -1,6 +1,7 @@
 #include <dlfcn.h>
 #include <string>
 #include <vector>
+#include <iostream>
 #include "IPrintPlugin.h"
 #include "pluginCounter.h"
 #include "pluginController.h"
