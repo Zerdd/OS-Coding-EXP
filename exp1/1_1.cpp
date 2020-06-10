@@ -6,33 +6,35 @@
 
 using namespace std;
 
+// 序列化类
 class Content
 {
 public:
-  Content()
+  Content()                     // 构造函数
   {
     i = 0;
   }
 
-  void SetContent(int j)
+  virtual ~Content() {}         // 析构函数
+
+  void SetContent(int j)        // 赋值
   {
     i = j;
   }
 
-  virtual ~Content() {}
-
-  void ShowContent()
+  void ShowContent()            // 输出序列化内容
   {
     std::cout << "Show_Content: " << i << std::endl;
   }
 
-  bool Serialize(const char *pFilePath);
-  bool Deserialize(const char *pFilePath);
+  bool Serialize(const char *pFilePath);   // 序列化函数
+  bool Deserialize(const char *pFilePath); // 反序列化函数
 
 private:
   int i;
 };
 
+// @brief 序列化内容到给定路径中
 bool Content::Serialize(const char *pFilePath)
 {
   // 打开文件，不存在就创建
@@ -43,8 +45,6 @@ bool Content::Serialize(const char *pFilePath)
     return false;
   }
 
-  cout << "open fd:" << fd << endl;
-
   // 写入
   if (write(fd, &i, sizeof(int)) == -1)
   {
@@ -53,9 +53,7 @@ bool Content::Serialize(const char *pFilePath)
     return false;
   }
 
-  cout << "writed size:" << fd << endl;
-
-  // 关闭
+  // 关闭文件
   if (close(fd) == -1)
   {
     cout << "Close error!" << endl;
@@ -66,6 +64,7 @@ bool Content::Serialize(const char *pFilePath)
   return true;
 }
 
+// @brief 从给定的路径中反序列化
 bool Content::Deserialize(const char *pFilePath)
 {
   // 打开已序列化的文件
@@ -77,6 +76,7 @@ bool Content::Deserialize(const char *pFilePath)
     return false;
   }
 
+  // 读取文件至i
   if (read(fd, &i, sizeof(int)) == -1)
   {
     close(fd);
@@ -84,6 +84,7 @@ bool Content::Deserialize(const char *pFilePath)
     return false;
   }
 
+  // 关闭文件
   if (close(fd) == -1)
   {
     cout << "Close error!" << endl;
@@ -91,17 +92,19 @@ bool Content::Deserialize(const char *pFilePath)
   }
 
   cout << "Deserialize success!" << endl;
-  cout << "a.i = " << i << endl;
+  cout << "i = " << i << endl;
   return true;
 }
 
 int main()
 {
-  Content a;
-  a.SetContent(10);
-
+  // 序列化代码段
   {
-    if (a.Serialize("data") == false)
+    Content se;             // 实例化一个序列化对象
+    se.SetContent(10);      // 给对象赋值
+
+    // 序列化到data文件里
+    if (se.Serialize("data") == false)
     {
       cout << "Serialize error!" << endl;
     }
@@ -109,8 +112,12 @@ int main()
 
   cout << "----------------" << endl;
 
+  // 反序列化代码段
   {
-    if (a.Deserialize("data") == false)
+    Content de;             // 实例化一个反序列化的存储对象
+
+    // 从data文件里反序列化
+    if (de.Deserialize("data") == false)
     {
       cout << "Deserialize error!" << endl;
     }
